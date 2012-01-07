@@ -1,0 +1,30 @@
+Package: g-client
+Section: hypermedia extensions | files | languages | mail | tools <M-x finder-list-keywords>
+License: GPL-2+ | BSD | Apache-2.0 | ... | Custom | None
+License-Text: <only for type Custom; full text or URL to page in http://spdx.org/licenses/>
+Depends: emacs (>= 22)
+Status: core-emacs[-NN.N] unmaintained broken unsafe stable unstable experimental
+Archive:
+Compat:
+Maintainer: Jari Aalto <jari.aalto@cante.net>
+Bugs: http://code.google.com/p/emacspeak/issues/list
+Upstream: T.V. Raman <tv.raman.tv@gmail.com>
+Upstream-Bugs:
+Vcs-Type: svn
+Vcs-Url: http://emacspeak.googlecode.com/svn/trunk/lisp/g-client
+Vcs-Browser: http://code.google.com/p/emacspeak/source/browse/
+Homepage: http://code.google.com/p/emacspeak
+Wiki: http://www.emacswiki.org/emacs/EmacSpeak
+Commentary:
+Description: Google Client e.g. to access Google Calendar
+ Google offers a number of services using a Google account. Many of these
+ services also expose a Web API. this package provides a set of Emacs
+ modules for accessing these services from inside Emacs. These modules are
+ designed with an Emacs-centric, rather than a Web-browser centered view of
+ the world. Where necessary Emacs package browse-url.el is used to invoke the
+ Web browser of choice.
+ .
+ For more information, see
+ <http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html>.
+ .
+ Note: YYYY-MM-DD the code hasn't been touched since YYYY.
