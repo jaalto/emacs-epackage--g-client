@@ -1,5 +1,5 @@
 ;;; gweb.el --- Google Search
-;;;$Id: gweb.el 7066 2011-06-24 00:14:33Z tv.raman.tv $
+;;;$Id: gweb.el 7801 2012-05-18 20:47:54Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  AJAX Search -> Lisp
 ;;; Keywords: Google   AJAX API
@@ -88,9 +88,15 @@
 ;;{{{ google suggest helper:
 
 ;;; Get search completions from Google
-
+;;; Service Names: (corpus)
+;; youtube : 'youtube',
+;; 			books : 'books',
+;; 			products : 'products',
+;; 			news : 'news',
+;; 			images : 'img',
+;; 			web : 'psy'
 (defvar gweb-suggest-url
-  "http://clients1.google.com/complete/search?json=t&nohtml=t&nolabels=t&q=%s"
+  "http://clients1.google.com/complete/search?json=t&nohtml=t&nolabels=t&client=%s&q=%s"
   "URL  that gets suggestions from Google as JSON.")
 ;;; corpus is ds=n for News
 
@@ -99,9 +105,9 @@
   (declare (special gweb-suggest-url))
   (unless (> (length input) 0) (setq input minibuffer-default))
   (g-using-scratch
-   (let ((url (format gweb-suggest-url (g-url-encode input))))
-     (when corpus
-       (setq url (format "%s&%s" url corpus)))
+   (let ((url
+          (format gweb-suggest-url (or corpus "psy")
+                  (g-url-encode input))))
      (call-process
       g-curl-program
       nil t nil
@@ -138,20 +144,36 @@
                             (gweb-suggest string)
                             string predicate)))))
 
-(defun gweb-news-suggest-completer (string predicate action)
-  "Generate completions using Google News Suggest. "
-  (save-current-buffer 
-    (set-buffer 
-     (let ((window (minibuffer-selected-window))) 
-       (if (window-live-p window) 
-           (window-buffer window) 
-         (current-buffer))))
-    (cond
-     ((eq action 'metadata) gweb-google-suggest-metadata)
-     (t
-      (complete-with-action action 
-                            (gweb-suggest string "ds=n")
-                            string predicate)))  ))
+
+;;{{{  Generate suggest handlers for Google properties
+(loop for c in
+      '("news" "products" "youtube" "books")
+      do
+      (eval
+       `(defun
+          , (intern
+             (format  "gweb-%s-suggest-completer" c))
+          (string predicate action)
+          ,(format
+            "Generate completions using Google %s Suggest. " c)
+          (save-current-buffer 
+            (set-buffer 
+             (let ((window (minibuffer-selected-window))) 
+               (if (window-live-p window) 
+                   (window-buffer window) 
+                 (current-buffer))))
+            (cond
+             ((eq action 'metadata) gweb-google-suggest-metadata)
+             (t
+              (complete-with-action action 
+                                    (gweb-suggest string ,c)
+                                    string predicate)))))))
+
+;;}}}
+
+
+
+
 
 (defvar gweb-history nil
   "History of Google Search queries.")
@@ -177,7 +199,30 @@
            'gweb-history))
     (pushnew  query gweb-history)
     (g-url-encode query)))
-  
+
+
+;;;###autoload
+
+(defsubst gweb-google-autocomplete-with-corpus (corpus)
+  "Read user input using Google Suggest for auto-completion.
+Uses specified corpus for prompting and suggest selection."
+  (let* (
+         (completer (intern (format "gweb-%s-suggest-completer"  corpus)))
+         (minibuffer-completing-file-name t) ;; accept spaces
+         (completion-ignore-case t)
+         (word (thing-at-point 'word))
+         (query nil))
+    (unless (fboundp completer)
+      (error "No  suggest handler for corpus %s" corpus))
+    (setq query
+          (completing-read
+           corpus
+           completer                   ; collection
+           nil nil                     ; predicate required-match
+           word                        ; initial input
+           'gweb-history))
+    (pushnew  query gweb-history)
+    (g-url-encode query)))
 ;;; For news:
 
 (defsubst gweb-news-autocomplete (&optional prompt)
@@ -332,20 +377,20 @@ Optional interactive prefix arg refresh forces this cached URL to be refreshed."
 Optional argument `raw-p' returns complete JSON  object."
   (let ((result 
          (g-json-get-result
-          (format "%s %s '%s'"
+          (format "%s --max-time 2 --connect-timeout 1 %s '%s'"
                   g-curl-program g-curl-common-options
                   (gweb-maps-geocoder-url
                    (g-url-encode address))))))
     
-     (unless
-         (string= "OK" (g-json-get 'status result))
-       (error "Error geo-coding location."))
-     (cond
-       (raw-p (g-json-get 'results result))
-       (t
-        (g-json-get 'location 
-                    (g-json-get 'geometry
-                                (aref (g-json-get 'results result) 0)))))))
+    (unless
+        (string= "OK" (g-json-get 'status result))
+      (error "Error geo-coding location."))
+    (cond
+     (raw-p (g-json-get 'results result))
+     (t
+      (g-json-get 'location 
+                  (g-json-get 'geometry
+                              (aref (g-json-get 'results result) 0)))))))
 
 ;;;###autoload
 (defun gweb-maps-reverse-geocode (lat-long &optional raw-p)
@@ -353,7 +398,7 @@ Optional argument `raw-p' returns complete JSON  object."
 Optional argument `raw-p' returns raw JSON  object."
   (let ((result 
          (g-json-get-result
-          (format "%s %s '%s'"
+          (format "%s --max-time 2 --connect-time 1%s '%s'"
                   g-curl-program g-curl-common-options
                   (gweb-maps-reverse-geocoder-url
                    (format "%s,%s"
