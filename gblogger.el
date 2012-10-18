@@ -1,5 +1,5 @@
 ;;; gblogger.el ---  new Atom Blogger API client
-;;; $Id: gblogger.el 6438 2010-02-20 04:50:37Z tv.raman.tv $
+;;; $Id: gblogger.el 7562 2012-03-08 16:55:53Z tv.raman.tv $
 ;;; $Author:$
 ;;; Description:  ATOM Blogger API
 ;;; Keywords: g-client, Blogger Atom API
@@ -70,7 +70,7 @@
 (require 'g-utils)
 (require 'g-auth)
 (require 'g-app)
-
+(require 'browse-url)
 ;;}}}
 ;;{{{ customizations
 

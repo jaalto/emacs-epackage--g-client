@@ -1,5 +1,5 @@
 ;;; greader.el --- Google Reader
-;;;$Id: greader.el 6936 2011-03-15 00:10:25Z tv.raman.tv $
+;;;$Id: greader.el 7936 2012-07-19 17:15:10Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  Google Reader
 ;;; Keywords: Google   Atom API
@@ -263,6 +263,25 @@ e.g., starred."
     (greader-state-url (or state greader-default-state)))
    g-atom-view-xsl))
 
+(defun greader-reading-list-titles()
+  "Ensure cookies are live, and return alist of title/urls  from reading list."
+  (interactive)
+  (declare (special greader-auth-handle
+                    g-curl-program g-curl-common-options
+                    greader-default-state g-atom-titles-xsl))
+  (g-auth-ensure-token greader-auth-handle)
+  (with-temp-buffer " *Reading List Scratch*"
+                    (insert 
+                     (g-get-result
+                      (format
+                       "%s %s %s %s 2>/dev/null"
+                       g-curl-program g-curl-common-options
+                       (g-authorization greader-auth-handle)
+                       (greader-state-url  greader-default-state))))
+                    (g-xsl-transform-region (point-min) (point-max) g-atom-titles-xsl) (goto-char (point-min))
+                    (read (current-buffer))))
+  
+
 (defun greader-read-preference (prompt)
   "Return pref name read from minibuffer."
   (declare (special greader-prefs-alist))
@@ -358,6 +377,15 @@ user."
               (t ""))))))
    (insert "</ol></body></html>\n")
    (browse-url-of-region (point-min) (point-max))))
+
+;;;###autoload
+(defun greader-subscription-list ()
+  "Return list of subscribed urls."
+   (loop for s across (greader-subscriptions)
+         collect
+          (greader-id-to-url(g-json-get 'id s))))
+   
+
 
 (defun greader-view-json-results (query results)
   "View Greader results list."

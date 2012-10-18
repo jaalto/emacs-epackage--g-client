@@ -1,7 +1,7 @@
-;;; g-health.el --- Health Google  Client
-;;;$Id: ghealth.el 5798 2008-08-22 17:35:01Z tv.raman.tv $
+;;; g-books.el --- Books Google  Client
+;;;$Id: gbooks.el 6262 2009-09-25 21:54:09Z tv.raman.tv $
 ;;; $Author: raman $
-;;; Description:  Health that all clients start from.
+;;; Description:  Books that all clients start from.
 ;;; Keywords: Google   Atom API
 ;;{{{  LCD Archive entry:
 
@@ -47,15 +47,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Commentary:
 ;;{{{  introduction
-
-;;; Google Health Via Atom 
-
+;;; API is here: http://code.google.com/apis/books/docs/v1/getting_started.html
+;;; <insert description here>
 ;;}}}
 ;;{{{  Required modules
 
 (require 'cl)
 (declaim  (optimize  (safety 0) (speed 3)))
-(require 'calendar)
+
 (require 'g-utils)
 (require 'g-auth)
 (require 'browse-url)
@@ -63,108 +62,108 @@
 ;;}}}
 ;;{{{ Customizations
 
-(defgroup ghealth nil
-  "Google health"
+(defgroup gbooks nil
+  "Google books"
   :group 'g)
 
-(defcustom ghealth-user-email nil
-  "Mail address that identifies calendar user."
+(defcustom gbooks-user-email nil
+  "Mail address that identifies books user."
   :type '(choice
           (const :tag "none" nil)
           (string :tag "username@gmail.com" ""))
-  :group 'ghealth)
+  :group 'gbooks)
 
-(defcustom ghealth-user-password nil
-  "Password for authenticating to calendar account."
+(defcustom gbooks-user-password nil
+  "Password for authenticating to books account."
   :type '(radio (const :tag "Prompt for password" nil)
                 (string :tag "Save password in .emacs"))
-  :group 'ghealth)
+  :group 'gbooks)
 
 ;;}}}
 ;;{{{ Constants
 
-(defconst ghealth-service-name "health"
-  "Service name for accessing Google health.")
+(defconst gbooks-service-name "skel"
+  "Service name for accessing Google books.")
 
-(defsubst ghealth-p (service)
-  "Check if this is Health."
-  (declare (special ghealth-service-name))
-  (string-equal service ghealth-service-name))
+(defsubst gbooks-p (service)
+  "Check if this is Books."
+  (declare (special gbooks-service-name))
+  (string-equal service gbooks-service-name))
 
 ;;}}}
-;;{{{ health Authenticate
+;;{{{ books Authenticate
 
-(defsubst make-ghealth-auth ()
-  "Make a new ghealth auth handle."
-  (declare (special ghealth-service-name
-                    ghealth-user-email ghealth-user-password))
-  (make-g-auth :service ghealth-service-name
-               :email ghealth-user-email
-               :password ghealth-user-password))
+(defsubst make-gbooks-auth ()
+  "Make a new gbooks auth handle."
+  (declare (special gbooks-service-name
+                    gbooks-user-email gbooks-user-password))
+  (make-g-auth :service gbooks-service-name
+               :email gbooks-user-email
+               :password gbooks-user-password))
 
-(defvar ghealth-auth-handle (make-ghealth-auth)
-  "G auth handle used for signing into health.")
+(defvar gbooks-auth-handle (make-gbooks-auth)
+  "G auth handle used for signing into books.")
 
-(defun ghealth-authenticate ()
-  "Authenticate into Google Health."
-  (declare (special ghealth-auth-handle))
-  (g-authenticate ghealth-auth-handle))
+(defun gbooks-authenticate ()
+  "Authenticate into Google Books."
+  (declare (special gbooks-auth-handle))
+  (g-authenticate gbooks-auth-handle))
 
 ;;}}}
 ;;{{{ Feed of feeds:
 
-(defvar ghealth-feeds-template-url
-  "'https://www.google.com/health/feeds/%s'"
-  "URL template for feed of feeds from health.")
+(defvar gbooks-feeds-template-url
+  "'https://www.google.com/books/feeds/%s'"
+  "URL template for feed of feeds from books.")
+(defsubst gbooks-feeds-url (userid)
+  "Return url for feed of feeds."
+  (declare (special gbooks-feeds-template-url))
+  (format gbooks-feeds-template-url userid))
 
-(defsubst ghealth-profile-list-url ()
-  "Return url for profile list."
-  (declare (special ghealth-feeds-template-url))
-  (format ghealth-feeds-template-url "profile/list"))
-
-(defun ghealth-profile-list ()
-  "Retrieve and display profile list  after authenticating."
+(defun gbooks-skels ()
+  "Retrieve and display feed of feeds after authenticating."
   (interactive)
-  (declare (special ghealth-auth-handle
+  (declare (special gbooks-auth-handle
                     g-atom-view-xsl
                     g-curl-program g-curl-common-options
                     g-cookie-options))
-  (g-auth-ensure-token ghealth-auth-handle)
+  (g-auth-ensure-token gbooks-auth-handle)
   (g-display-result
    (format
     "%s %s %s %s '%s' 2>/dev/null"
     g-curl-program g-curl-common-options
     g-cookie-options
-    (g-authorization ghealth-auth-handle)
-    (ghealth-profile-list-url))
+    (g-authorization gbooks-auth-handle)
+    (gbooks-feeds-url
+     (g-url-encode (g-auth-email gbooks-auth-handle))))
    g-atom-view-xsl))
 
 ;;}}}
 ;;{{{ Sign out:
 ;;;###autoload
-(defun ghealth-sign-out()
+(defun gbooks-sign-out()
   "Resets client so you can start with a different userid."
   (interactive)
-  (declare (special ghealth-auth-handle
-                    ghealth-user-email ghealth-user-password))
-  (message "Signing out %s from Health"
-           (g-auth-email ghealth-auth-handle))
-  (setq ghealth-user-email nil
-        ghealth-user-password nil)
-  (setq ghealth-auth-handle (make-ghealth-auth)))
+  (declare (special gbooks-auth-handle
+                    gbooks-user-email gbooks-user-password))
+  (message "Signing out %s from Books"
+           (g-auth-email gbooks-auth-handle))
+  (setq gbooks-user-email nil
+        gbooks-user-password nil)
+  (setq gbooks-auth-handle (make-gbooks-auth)))
 
 ;;;###autoload
-(defun ghealth-sign-in()
+(defun gbooks-sign-in()
   "Resets client so you can start with a different userid."
   (interactive)
-  (declare (special ghealth-auth-handle ghealth-user-email ))
-  (setq ghealth-user-email
+  (declare (special gbooks-auth-handle gbooks-user-email ))
+  (setq gbooks-user-email
         (read-from-minibuffer "User Email:"))
-  (setq ghealth-auth-handle (make-ghealth-auth))
-  (g-authenticate ghealth-auth-handle))
+  (setq gbooks-auth-handle (make-gbooks-auth))
+  (g-authenticate gbooks-auth-handle))
 
 ;;}}}
-(provide 'ghealth)
+(provide 'gbooks)
 ;;{{{ end of file
 
 ;;; local variables:
