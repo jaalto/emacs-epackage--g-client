@@ -1,6 +1,33 @@
 
-;;;### (autoloads (gweb-my-address gweb-maps-reverse-geocode gweb-maps-geocode
-;;;;;;  gweb-google-at-point) "gweb.el" (20608 7695))
+;;;### (autoloads (gfinance-sign-in gfinance-sign-out gfinance-display-feed
+;;;;;;  gfinance-portfolios) "gfinance" "gfinance.el"
+;;;;;;  (20938 37849 0 0))
+;;; Generated autoloads from ../obsolete/gfinance.el
+
+(autoload 'gfinance-portfolios "gfinance" "\
+Retrieve and display feed of feeds after authenticating.
+
+\(fn)" t nil)
+
+(autoload 'gfinance-display-feed "gfinance" "\
+Retrieve and display feedat feed-url  after authenticating.
+
+\(fn FEED-URL)" t nil)
+
+(autoload 'gfinance-sign-out "gfinance" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+(autoload 'gfinance-sign-in "gfinance" "\
+Resets client so you can start with a different userid.
+
+\(fn)" t nil)
+
+;;;***
+
+;;;### (autoloads (gweb-google-at-point) "gweb" "gweb.el" (20938
+;;;;;;  37849 0 0))
 ;;; Generated autoloads from ../gweb.el
 
 (defsubst gweb-google-autocomplete-with-corpus (corpus) "\
@@ -14,32 +41,13 @@ Optional interactive prefix arg refresh forces this cached URL to be refreshed.
 
 \(fn SEARCH-TERM &optional REFRESH)" t nil)
 
-(autoload 'gweb-maps-geocode "gweb" "\
-Geocode given address.
-Optional argument `raw-p' returns complete JSON  object.
-
-\(fn ADDRESS &optional RAW-P)" nil nil)
-
-(autoload 'gweb-maps-reverse-geocode "gweb" "\
-Reverse geocode lat-long.
-Optional argument `raw-p' returns raw JSON  object.
-
-\(fn LAT-LONG &optional RAW-P)" nil nil)
-
-(defvar gweb-my-location nil "\
-Geo coordinates --- automatically set by reverse geocoding gweb-my-address")
-
-(defvar gweb-my-address nil "\
-Location address. Setting this updates gweb-my-location coordinates  via geocoding.")
-
-(custom-autoload 'gweb-my-address "gweb" nil)
-
 ;;;***
 
 ;;;### (autoloads (gtube-video-featured gtube-video-by-user gtube-video-popular
 ;;;;;;  gtube-video-playlist gtube-video-by-category-and-tag gtube-video-by-tag
 ;;;;;;  gtube-video-details gtube-user-friends gtube-user-favorites
-;;;;;;  gtube-user-profile) "gtube.el" (20608 7695))
+;;;;;;  gtube-user-profile) "gtube" "gtube.el" (20938 37849
+;;;;;;  0 0))
 ;;; Generated autoloads from ../gtube.el
 
 (autoload 'gtube-user-profile "gtube" "\
@@ -104,7 +112,7 @@ Retrieved featured video list.
 ;;;***
 
 ;;;### (autoloads (gskeleton-sign-in gskeleton-sign-out) "gskeleton"
-;;;;;;  "gskeleton.el" (20608 7695))
+;;;;;;  "gskeleton.el" (20938 37849 0 0))
 ;;; Generated autoloads from ../gskeleton.el
 
 (autoload 'gskeleton-sign-out "gskeleton" "\
@@ -120,7 +128,7 @@ Resets client so you can start with a different userid.
 ;;;***
 
 ;;;### (autoloads (gsheet-sign-in gsheet-sign-out gsheet-sheets gsheet-fetch)
-;;;;;;  "gsheet.el" (20608 7695))
+;;;;;;  "gsheet" "gsheet.el" (20938 37849 0 0))
 ;;; Generated autoloads from ../gsheet.el
 
 (autoload 'gsheet-fetch "gsheet" "\
@@ -150,8 +158,8 @@ Resets client so you can start with a different userid.
 ;;;;;;  greader-update-subscription greader-untag-feed greader-tag-feed
 ;;;;;;  greader-title-feed greader-unsubscribe-feed greader-subscribe-feed
 ;;;;;;  greader-opml greader-feed-list greader-subscriptions greader-subscription-list
-;;;;;;  greader-preferences greader-reading-list) "greader.el"
-;;;;;;  (20608 7695))
+;;;;;;  greader-preferences greader-reading-list) "greader" "greader.el"
+;;;;;;  (20938 37849 0 0))
 ;;; Generated autoloads from ../greader.el
 
 (autoload 'greader-reading-list "greader" "\
@@ -259,8 +267,8 @@ Reauthenticate current user.
 ;;;;;;  gphoto-comment-or-tag gphoto-directory-add-photos gphoto-photo-add
 ;;;;;;  gphoto-album-create gphoto-user-tagsearch gphoto-user-search
 ;;;;;;  gphoto-recent gphoto-community-search gphoto-download gphoto-view
-;;;;;;  gphoto-tags gphoto-albums gphoto-feeds) "gphoto.el"
-;;;;;;  (20608 7695))
+;;;;;;  gphoto-tags gphoto-albums gphoto-feeds) "gphoto" "gphoto.el"
+;;;;;;  (20938 37849 0 0))
 ;;; Generated autoloads from ../gphoto.el
 
 (autoload 'gphoto-feeds "gphoto" "\
@@ -348,8 +356,39 @@ The retrieved entry is placed in a buffer ready for editing.
 
 ;;;***
 
+;;;### (autoloads (gmaps gweb-my-address gmaps-reverse-geocode gmaps-geocode)
+;;;;;;  "gmaps" "gmaps.el" (20938 37849 0 0))
+;;; Generated autoloads from ../gmaps.el
+
+(autoload 'gmaps-geocode "gmaps" "\
+Geocode given address.
+Optional argument `raw-p' returns complete JSON  object.
+
+\(fn ADDRESS &optional RAW-P)" nil nil)
+
+(autoload 'gmaps-reverse-geocode "gmaps" "\
+Reverse geocode lat-long.
+Optional argument `raw-p' returns raw JSON  object.
+
+\(fn LAT-LONG &optional RAW-P)" nil nil)
+
+(defvar gweb-my-location nil "\
+Geo coordinates --- automatically set by reverse geocoding gweb-my-address")
+
+(defvar gweb-my-address nil "\
+Location address. Setting this updates gweb-my-location coordinates  via geocoding.")
+
+(custom-autoload 'gweb-my-address "gmaps" nil)
+
+(autoload 'gmaps "gmaps" "\
+Google Maps Interaction.
+
+\(fn)" t nil)
+
+;;;***
+
 ;;;### (autoloads (ghealth-sign-in ghealth-sign-out) "ghealth"
-;;;;;;  "ghealth.el" (20608 7695))
+;;;;;;  "ghealth.el" (20938 37849 0 0))
 ;;; Generated autoloads from ../ghealth.el
 
 (autoload 'ghealth-sign-out "ghealth" "\
@@ -365,8 +404,8 @@ Resets client so you can start with a different userid.
 ;;;***
 
 ;;;### (autoloads (gfinance-sign-in gfinance-sign-out gfinance-display-feed
-;;;;;;  gfinance-portfolios) "gfinance.el" (20608
-;;;;;;  7695))
+;;;;;;  gfinance-portfolios) "gfinance" "gfinance.el" (20938
+;;;;;;  36715 0 0))
 ;;; Generated autoloads from ../gfinance.el
 
 (autoload 'gfinance-portfolios "gfinance" "\
@@ -392,7 +431,8 @@ Resets client so you can start with a different userid.
 ;;;***
 
 ;;;### (autoloads (gfeeds-lookup-and-view gfeeds-view gfeeds-titles
-;;;;;;  gfeeds-freshness) "gfeeds.el" (20608 7695))
+;;;;;;  gfeeds-freshness) "gfeeds" "gfeeds.el" (20938 37849
+;;;;;;  0 0))
 ;;; Generated autoloads from ../gfeeds.el
 
 (defsubst gfeeds-feed (feed-url) "\
@@ -429,7 +469,7 @@ Lookup feed URL for a site and browse result.
 
 ;;;### (autoloads (gdocs-sign-in gdocs-sign-out gdocs-view-item gdocs-delete-item
 ;;;;;;  gdocs-add-collaborator gdocs-publish gdocs-doclist) "gdocs"
-;;;;;;  "gdocs.el" (20608 7695))
+;;;;;;  "gdocs.el" (20938 37849 0 0))
 ;;; Generated autoloads from ../gdocs.el
 
 (autoload 'gdocs-doclist "gdocs" "\
@@ -472,7 +512,7 @@ Resets client so you can start with a different userid.
 ;;;***
 
 ;;;### (autoloads (gcontacts-create gcontacts-initialize) "gcontacts"
-;;;;;;  "gcontacts.el" (20608 7695))
+;;;;;;  "gcontacts.el" (20938 37849 0 0))
 ;;; Generated autoloads from ../gcontacts.el
 
 (autoload 'gcontacts-initialize "gcontacts" "\
@@ -490,7 +530,8 @@ Create a new contact as specified.
 ;;;### (autoloads (gcal-sign-in gcal-sign-out gcal-emacs-calendar-setup
 ;;;;;;  gcal-show-event gcal-view gcal-calendar-agenda-days gcal-reject-event
 ;;;;;;  gcal-delete-event gcal-quickadd-event gcal-add-event gcal-user-email
-;;;;;;  gcal-default-user-email) "gcal.el" (20608 7695))
+;;;;;;  gcal-default-user-email) "gcal" "gcal.el" (20938 37848
+;;;;;;  0 0))
 ;;; Generated autoloads from ../gcal.el
 
 (defvar gcal-default-user-email nil "\
@@ -558,8 +599,8 @@ Sign in, useful when changing to a different user profile.
 
 ;;;***
 
-;;;### (autoloads (gbooks-sign-in gbooks-sign-out) "gbooks.el"
-;;;;;;  (20608 7695))
+;;;### (autoloads (gbooks-sign-in gbooks-sign-out) "gbooks" "gbooks.el"
+;;;;;;  (20938 37848 0 0))
 ;;; Generated autoloads from ../gbooks.el
 
 (autoload 'gbooks-sign-out "gbooks" "\
@@ -576,8 +617,8 @@ Resets client so you can start with a different userid.
 
 ;;;### (autoloads (gblogger-sign-in gblogger-sign-out gblogger-add-label
 ;;;;;;  gblogger-delete-entry gblogger-new-entry gblogger-edit-entry
-;;;;;;  gblogger-atom-display gblogger-blog) "gblogger.el"
-;;;;;;  (20608 7695))
+;;;;;;  gblogger-atom-display gblogger-blog) "gblogger" "gblogger.el"
+;;;;;;  (20938 37848 0 0))
 ;;; Generated autoloads from ../gblogger.el
 
 (autoload 'gblogger-blog "gblogger" "\
@@ -624,8 +665,8 @@ Resets client so you can start with a different userid.
 
 ;;;***
 
-;;;### (autoloads (g-auth-lifetime) "g-auth.el" (20608
-;;;;;;  7695))
+;;;### (autoloads (g-auth-lifetime) "g-auth" "g-auth.el" (20938
+;;;;;;  37848 0 0))
 ;;; Generated autoloads from ../g-auth.el
 
 (defvar g-auth-lifetime "4 hours" "\
@@ -635,8 +676,8 @@ Auth lifetime.")
 
 ;;;***
 
-;;;### (autoloads (g-app-view g-app-publish) "g-app.el"
-;;;;;;  (20608 7695))
+;;;### (autoloads (g-app-view g-app-publish) "g-app" "g-app.el"
+;;;;;;  (20938 37848 0 0))
 ;;; Generated autoloads from ../g-app.el
 
 (autoload 'g-app-publish "g-app" "\
