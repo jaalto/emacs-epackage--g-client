@@ -1,7 +1,7 @@
-;;; g-books.el --- Books Google  Client
-;;;$Id: gbooks.el 6262 2009-09-25 21:54:09Z tv.raman.tv $
+;;; g-finance.el --- Finance Google  Client
+;;;$Id: gfinance.el 8353 2013-05-21 15:54:49Z tv.raman.tv $
 ;;; $Author: raman $
-;;; Description:  Books that all clients start from.
+;;; Description:  Google Finance from emacs
 ;;; Keywords: Google   Atom API
 ;;{{{  LCD Archive entry:
 
@@ -47,14 +47,14 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Commentary:
 ;;{{{  introduction
-;;; API is here: http://code.google.com/apis/books/docs/v1/getting_started.html
+
 ;;; <insert description here>
 ;;}}}
 ;;{{{  Required modules
 
 (require 'cl)
 (declaim  (optimize  (safety 0) (speed 3)))
-
+(require 'calendar)
 (require 'g-utils)
 (require 'g-auth)
 (require 'browse-url)
@@ -62,108 +62,126 @@
 ;;}}}
 ;;{{{ Customizations
 
-(defgroup gbooks nil
-  "Google books"
+(defgroup gfinance nil
+  "Google finance"
   :group 'g)
 
-(defcustom gbooks-user-email nil
-  "Mail address that identifies books user."
+(defcustom gfinance-user-email nil
+  "Mail address that identifies calendar user."
   :type '(choice
           (const :tag "none" nil)
           (string :tag "username@gmail.com" ""))
-  :group 'gbooks)
+  :group 'gfinance)
 
-(defcustom gbooks-user-password nil
-  "Password for authenticating to books account."
+(defcustom gfinance-user-password nil
+  "Password for authenticating to calendar account."
   :type '(radio (const :tag "Prompt for password" nil)
                 (string :tag "Save password in .emacs"))
-  :group 'gbooks)
+  :group 'gfinance)
 
 ;;}}}
 ;;{{{ Constants
 
-(defconst gbooks-service-name "skel"
-  "Service name for accessing Google books.")
+(defconst gfinance-service-name "finance"
+  "Service name for accessing Google finance.")
 
-(defsubst gbooks-p (service)
-  "Check if this is Books."
-  (declare (special gbooks-service-name))
-  (string-equal service gbooks-service-name))
+(defsubst gfinance-p (service)
+  "Check if this is Calendar."
+  (declare (special gfinance-service-name))
+  (string-equal service gfinance-service-name))
 
 ;;}}}
-;;{{{ books Authenticate
+;;{{{ finance Authenticate
 
-(defsubst make-gbooks-auth ()
-  "Make a new gbooks auth handle."
-  (declare (special gbooks-service-name
-                    gbooks-user-email gbooks-user-password))
-  (make-g-auth :service gbooks-service-name
-               :email gbooks-user-email
-               :password gbooks-user-password))
+(defsubst make-gfinance-auth ()
+  "Make a new gfinance auth handle."
+  (declare (special gfinance-service-name
+                    gfinance-user-email gfinance-user-password))
+  (make-g-auth :service gfinance-service-name
+               :email gfinance-user-email
+               :password gfinance-user-password))
 
-(defvar gbooks-auth-handle (make-gbooks-auth)
-  "G auth handle used for signing into books.")
+(defvar gfinance-auth-handle (make-gfinance-auth)
+  "G auth handle used for signing into calendar.")
 
-(defun gbooks-authenticate ()
-  "Authenticate into Google Books."
-  (declare (special gbooks-auth-handle))
-  (g-authenticate gbooks-auth-handle))
+(defun gfinance-authenticate ()
+  "Authenticate into Google Calendar."
+  (declare (special gfinance-auth-handle))
+  (g-authenticate gfinance-auth-handle))
 
 ;;}}}
 ;;{{{ Feed of feeds:
 
-(defvar gbooks-feeds-template-url
-  "'https://www.google.com/books/feeds/%s'"
-  "URL template for feed of feeds from books.")
-(defsubst gbooks-feeds-url (userid)
-  "Return url for feed of feeds."
-  (declare (special gbooks-feeds-template-url))
-  (format gbooks-feeds-template-url userid))
+(defvar gfinance-feeds-template-url
+  "'http://finance.google.com/finance/feeds/%s/portfolios'"
+  "URL template for feed of portfolios from Finance.")
 
-(defun gbooks-skels ()
+(defsubst gfinance-feeds-url (userid)
+  "Return url for feed of feeds."
+  (declare (special gfinance-feeds-template-url))
+  (format gfinance-feeds-template-url userid))
+;;;###autoload
+(defun gfinance-portfolios ()
   "Retrieve and display feed of feeds after authenticating."
   (interactive)
-  (declare (special gbooks-auth-handle
+  (declare (special gfinance-auth-handle
                     g-atom-view-xsl
                     g-curl-program g-curl-common-options
                     g-cookie-options))
-  (g-auth-ensure-token gbooks-auth-handle)
+  (g-auth-ensure-token gfinance-auth-handle)
   (g-display-result
    (format
     "%s %s %s %s '%s' 2>/dev/null"
     g-curl-program g-curl-common-options
     g-cookie-options
-    (g-authorization gbooks-auth-handle)
-    (gbooks-feeds-url
-     (g-url-encode (g-auth-email gbooks-auth-handle))))
+    (g-authorization gfinance-auth-handle)
+    (gfinance-feeds-url
+     (g-url-encode (g-auth-email gfinance-auth-handle))))
+   g-atom-view-xsl))
+;;;###autoload
+(defun gfinance-display-feed (feed-url)
+  "Retrieve and display feedat feed-url  after authenticating."
+  (interactive "sURL:")
+  (declare (special gfinance-auth-handle
+                    g-atom-view-xsl
+                    g-curl-program g-curl-common-options
+                    g-cookie-options))
+  (g-auth-ensure-token gfinance-auth-handle)
+  (g-display-result
+   (format
+    "%s %s %s %s '%s' 2>/dev/null"
+    g-curl-program g-curl-common-options
+    g-cookie-options
+    (g-authorization gfinance-auth-handle)
+    feed-url)
    g-atom-view-xsl))
 
 ;;}}}
 ;;{{{ Sign out:
 ;;;###autoload
-(defun gbooks-sign-out()
+(defun gfinance-sign-out()
   "Resets client so you can start with a different userid."
   (interactive)
-  (declare (special gbooks-auth-handle
-                    gbooks-user-email gbooks-user-password))
-  (message "Signing out %s from Books"
-           (g-auth-email gbooks-auth-handle))
-  (setq gbooks-user-email nil
-        gbooks-user-password nil)
-  (setq gbooks-auth-handle (make-gbooks-auth)))
+  (declare (special gfinance-auth-handle
+                    gfinance-user-email gfinance-user-password))
+  (message "Signing out %s from Calendar"
+           (g-auth-email gfinance-auth-handle))
+  (setq gfinance-user-email nil
+        gfinance-user-password nil)
+  (setq gfinance-auth-handle (make-gfinance-auth)))
 
 ;;;###autoload
-(defun gbooks-sign-in()
+(defun gfinance-sign-in()
   "Resets client so you can start with a different userid."
   (interactive)
-  (declare (special gbooks-auth-handle gbooks-user-email ))
-  (setq gbooks-user-email
+  (declare (special gfinance-auth-handle gfinance-user-email ))
+  (setq gfinance-user-email
         (read-from-minibuffer "User Email:"))
-  (setq gbooks-auth-handle (make-gbooks-auth))
-  (g-authenticate gbooks-auth-handle))
+  (setq gfinance-auth-handle (make-gfinance-auth))
+  (g-authenticate gfinance-auth-handle))
 
 ;;}}}
-(provide 'gbooks)
+(provide 'gfinance)
 ;;{{{ end of file
 
 ;;; local variables:

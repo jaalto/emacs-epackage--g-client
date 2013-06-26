@@ -1,5 +1,5 @@
 ;;; gblogger.el ---  new Atom Blogger API client
-;;; $Id: gblogger.el 7562 2012-03-08 16:55:53Z tv.raman.tv $
+;;; $Id: gblogger.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author:$
 ;;; Description:  ATOM Blogger API
 ;;; Keywords: g-client, Blogger Atom API
@@ -297,7 +297,7 @@ The retrieved entry is placed in a buffer ready for editing.
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}

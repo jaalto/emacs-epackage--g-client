@@ -1,5 +1,5 @@
 ;;; gcal.el --- Google Calendar
-;;;$Id: gcal.el 6626 2010-11-11 16:23:32Z tv.raman.tv $
+;;;$Id: gcal.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  Google Calendar
 ;;; Keywords: Google   Atom API
@@ -877,7 +877,7 @@ date under point."
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}

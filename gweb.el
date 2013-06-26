@@ -1,5 +1,5 @@
 ;;; gweb.el --- Google Search
-;;;$Id: gweb.el 7801 2012-05-18 20:47:54Z tv.raman.tv $
+;;;$Id: gweb.el 8158 2013-02-19 01:37:29Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  AJAX Search -> Lisp
 ;;; Keywords: Google   AJAX API
@@ -352,95 +352,12 @@ Optional interactive prefix arg refresh forces this cached URL to be refreshed."
       (message "%s %s" title content)))))
 
 ;;}}}
-;;{{{ Maps Geo-Coding and Reverse Geo-Coding:
-;;; See http://feedproxy.google.com/~r/GoogleGeoDevelopersBlog/~3/0aP4dsogPJ4/introducing-new-google-geocoding-web.html
-
-(defvar gweb-maps-geocoder-base
-  "http://maps.google.com/maps/api/geocode/json?"
-  "Base URL  end-point for talking to the Google Maps Geocoding service.")
-
-(defsubst gweb-maps-geocoder-url (address)
-  "Return URL   for geocoding address."
-  (declare (special gweb-maps-geocoder-base))
-  (format "%saddress=%s&sensor=false"
-          gweb-maps-geocoder-base address))
-
-(defsubst gweb-maps-reverse-geocoder-url (address)
-  "Return URL   for reverse geocoding location."
-  (declare (special gweb-maps-geocoder-base))
-  (format "%slatlng=%s&sensor=false"
-          gweb-maps-geocoder-base address))
-
-;;;###autoload
-(defun gweb-maps-geocode (address &optional raw-p)
-  "Geocode given address.
-Optional argument `raw-p' returns complete JSON  object."
-  (let ((result 
-         (g-json-get-result
-          (format "%s --max-time 2 --connect-timeout 1 %s '%s'"
-                  g-curl-program g-curl-common-options
-                  (gweb-maps-geocoder-url
-                   (g-url-encode address))))))
-    
-    (unless
-        (string= "OK" (g-json-get 'status result))
-      (error "Error geo-coding location."))
-    (cond
-     (raw-p (g-json-get 'results result))
-     (t
-      (g-json-get 'location 
-                  (g-json-get 'geometry
-                              (aref (g-json-get 'results result) 0)))))))
-
-;;;###autoload
-(defun gweb-maps-reverse-geocode (lat-long &optional raw-p)
-  "Reverse geocode lat-long.
-Optional argument `raw-p' returns raw JSON  object."
-  (let ((result 
-         (g-json-get-result
-          (format "%s --max-time 2 --connect-time 1%s '%s'"
-                  g-curl-program g-curl-common-options
-                  (gweb-maps-reverse-geocoder-url
-                   (format "%s,%s"
-                           (g-json-get 'lat lat-long)
-                           (g-json-get 'lng   lat-long)))))))
-    (unless (string= "OK" (g-json-get 'status result))
-      (error "Error reverse geo-coding."))
-    (cond
-     (raw-p (g-json-get 'results result))
-     (t
-     (g-json-get 'formatted_address
-                 (aref (g-json-get 'results result) 0))))))
-
-;;; Example of use:
-;;;###autoload
-(defvar gweb-my-location
-  nil
-  "Geo coordinates --- automatically set by reverse geocoding gweb-my-address")
-
-;;;###autoload
-(defcustom gweb-my-address
-  nil
-  "Location address. Setting this updates gweb-my-location coordinates  via geocoding."
-  :type '(choice
-          (const :tag "None" nil)
-                 (string  :tag "Address"))
-  :set  #'(lambda (sym val)
-            (declare (special gweb-my-location))
-            (when val 
-              (setq gweb-my-location (gweb-maps-geocode val))
-              (when (featurep 'emacspeak)
-                (emacspeak-calendar-setup-sunrise-sunset)))
-            (set-default sym val))
-  :group 'gweb)
-  
-;;}}}
 (provide 'gweb)
 ;;{{{ end of file
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}

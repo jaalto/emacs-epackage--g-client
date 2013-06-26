@@ -1,5 +1,5 @@
 ;;; g-tube.el --- YouTube Google  Client
-;;;$Id: gtube.el 5975 2008-10-07 22:36:49Z tv.raman.tv $
+;;;$Id: gtube.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  YouTube API Client
 ;;; Keywords: Google    API
@@ -342,7 +342,7 @@ optional args page and count specify position in result-set and
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}

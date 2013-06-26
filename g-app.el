@@ -1,5 +1,5 @@
 ;;; g-app.el --- Google Client APP methods
-;;;$Id: g-app.el 6047 2008-11-07 22:11:42Z tv.raman.tv $
+;;;$Id: g-app.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  Google Client APP
 ;;; Keywords: Google   Atom API, Google Services
@@ -227,7 +227,7 @@ action is the function to call when we're ready to submit the edit."
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}

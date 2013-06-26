@@ -1,5 +1,5 @@
 ;;; gnotebook.el --- Google Notebook
-;;;$Id: gnotebook.el 5798 2008-08-22 17:35:01Z tv.raman.tv $
+;;;$Id: gnotebook.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  Google Notebook
 ;;; Keywords: Google   Services
@@ -172,7 +172,7 @@
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}
