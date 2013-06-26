@@ -1,5 +1,5 @@
 ;;; g-utils.el --- Google Client Utilities
-;;;$Id: g-utils.el 7942 2012-07-20 17:43:12Z tv.raman.tv $
+;;;$Id: g-utils.el 8191 2013-02-26 01:30:00Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  Google Client utilities
 ;;; Keywords: Google   Atom API, Google Services
@@ -243,10 +243,10 @@ For using string keys, use g-json-lookup."
 (defsubst g-json-lookup (key object)
   "Return object.key from json object or nil if not found.
 Key  is a string of of the form a.b.c"
-  (let ((name  (split-string key "\\." 'omit-null))
+  (let ((name  (mapcar #'intern (split-string key "\\." 'omit-null)))
         (v object))
     (while (and name
-                (setq v (cdr (assoc (car name) v))))
+                (setq v (cdr (assq (car name) v))))
       (setq name (cdr name)))
     (cond
      ((null name) v)
@@ -416,7 +416,7 @@ Note that in the Curl output, we see lf rather than crlf.")
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}

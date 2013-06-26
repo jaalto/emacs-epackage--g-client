@@ -1,5 +1,5 @@
 ;;; gfeeds.el --- Google Access To Feeds
-;;;$Id: gfeeds.el 7472 2011-11-29 15:17:56Z tv.raman.tv $
+;;;$Id: gfeeds.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  AJAX Feeds -> Lisp
 ;;; Keywords: Google   AJAX Feeds API
@@ -241,12 +241,12 @@ Interactive prefix arg causes the feed url to be looked up given a Web site."
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}
 ;;; gfeeds.el --- Google Feeds
-;;;$Id: gfeeds.el 7472 2011-11-29 15:17:56Z tv.raman.tv $
+;;;$Id: gfeeds.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
 ;;; $Author: raman $
 ;;; Description:  AJAX Feeds -> Lisp
 ;;; Keywords: Google   AJAX API
@@ -319,7 +319,7 @@ Interactive prefix arg causes the feed url to be looked up given a Web site."
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}
