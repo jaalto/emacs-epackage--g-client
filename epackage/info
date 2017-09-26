@@ -26,4 +26,6 @@ Description: Google Client e.g. to access Google Calendar
  For more information, see
  <http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html>.
  .
- Note: 2017-09-24 Source code is in Github
+ Note: Requires full install of org-mode with org-exp.el. 
+ (org-mode included in Emacs may not have this file). See
+ https://github.com/tomprince/org-mode
