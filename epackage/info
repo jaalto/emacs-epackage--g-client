@@ -1,9 +1,8 @@
 Package: g-client
-Section: hypermedia extensions | files | languages | mail | tools <M-x finder-list-keywords>
+Section: extensions
 License: GPL-2+ | BSD | Apache-2.0 | ... | Custom | None
-License-Text: <only for type Custom; full text or URL to page in http://spdx.org/licenses/>
-Depends: emacs (>= 22)
-Status: core-emacs[-NN.N] unmaintained broken unsafe stable unstable experimental
+Depends: emacs (>= 25), org-exp
+Status: unmaintained broken
 Archive:
 Compat:
 Maintainer: Jari Aalto <jari.aalto@cante.net>
@@ -27,4 +26,4 @@ Description: Google Client e.g. to access Google Calendar
  For more information, see
  <http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html>.
  .
- Note: YYYY-MM-DD the code hasn't been touched since YYYY.
+ Note: 2017-09-24 Dead project
