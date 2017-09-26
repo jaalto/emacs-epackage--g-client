@@ -1,5 +1,5 @@
-;;; g-autogen.el --- Generate autoloads for G
-;;; $Id: g-autogen.el 5798 2008-08-22 17:35:01Z tv.raman.tv $
+;;; g-autogen.el --- Generate autoloads for G  -*- lexical-binding: t; -*-
+;;; $Id$
 ;;; $Author: raman $
 ;;; Description:  autoload Wizard for the G client
 ;;; Keywords: Google Services
@@ -53,8 +53,8 @@
 ;;}}}
 ;;{{{  Required modules
 
-(require 'cl)
-(declaim  (optimize  (safety 0) (speed 3)))
+(require 'cl-lib)
+(cl-declaim  (optimize  (safety 0) (speed 3)))
 (require 'autoload)
 (load-library "cus-dep")
 
@@ -82,7 +82,7 @@
 
 (defun g-autogen-generate-autoloads ()
   "Generate G autoloads."
-  (declare (special  g-autogen-autoloads-file
+  (cl-declare (special  g-autogen-autoloads-file
                      g-autogen-updator g-directory))
   (let ((generated-autoload-file g-autogen-autoloads-file))
     (funcall g-autogen-updator g-directory)))
@@ -96,7 +96,7 @@
 
 (defun g-autogen-custom-make-dependencies ()
   "Generate G custom dependencies."
-  (declare (special  g-autogen-custom-dependencies-file))
+  (cl-declare (special  g-autogen-custom-dependencies-file))
   (let ((generated-custom-dependencies-file g-autogen-custom-dependencies-file))
     (custom-make-dependencies)))
 

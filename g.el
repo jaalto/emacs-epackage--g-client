@@ -1,5 +1,5 @@
-;;; g.el --- Google Client
-;;;$Id: g.el 8146 2013-02-09 20:05:08Z tv.raman.tv $
+;;; g.el --- Google Client  -*- lexical-binding: t; -*-
+;;;$Id$
 ;;; $Author: raman $
 ;;; Description:  Google Client
 ;;; Keywords: emacs g-client, Google   Atom API, Google Services
@@ -45,16 +45,16 @@
 
 ;;}}}
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Commentary:
 ;;{{{  introduction
-
+;;; Commentary:
 ;;; Top-level bootstrap module for Google Client.
 ;;; Loads in authentication module and sets up per-service
 ;;modules:
-;;; Google Reader: greader
-;;; Google Calendar: gcal
-;;; ...
-
+;;; gmaps: Google Maps 
+;;; gweb: Google Web Search
+;;; gblogger: Blogger
+;;; gphoto: Google Photos 
+;;; Code:
 ;;}}}
 ;;{{{ customizations:
 
@@ -70,8 +70,6 @@
 
 (load-library "g-loaddefs")
 (load-library "g-cus-load")
-(add-hook 'calendar-load-hook
-          'gcal-emacs-calendar-setup)
 
 ;;}}}
 (provide 'g)
