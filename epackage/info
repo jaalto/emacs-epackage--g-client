@@ -10,7 +10,7 @@ Bugs: http://code.google.com/p/emacspeak/issues/list
 Upstream: T.V. Raman <tv.raman.tv@gmail.com>
 Upstream-Bugs:
 Vcs-Type: svn
-Vcs-Url: https://github.com/tvraman/emacspeak
+Vcs-Url: https://github.com/tvraman/emacspeak.git
 Vcs-Browser: https://github.com/tvraman/emacspeak
 Homepage: http://code.google.com/p/emacspeak
 Wiki: http://www.emacswiki.org/emacs/EmacSpeak
