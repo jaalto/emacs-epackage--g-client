@@ -10,8 +10,8 @@ Bugs: http://code.google.com/p/emacspeak/issues/list
 Upstream: T.V. Raman <tv.raman.tv@gmail.com>
 Upstream-Bugs:
 Vcs-Type: svn
-Vcs-Url: http://emacspeak.googlecode.com/svn/trunk/lisp/g-client
-Vcs-Browser: http://code.google.com/p/emacspeak/source/browse/
+Vcs-Url: https://github.com/tvraman/emacspeak
+Vcs-Browser: https://github.com/tvraman/emacspeak
 Homepage: http://code.google.com/p/emacspeak
 Wiki: http://www.emacswiki.org/emacs/EmacSpeak
 Commentary:
@@ -26,4 +26,4 @@ Description: Google Client e.g. to access Google Calendar
  For more information, see
  <http://emacspeak.blogspot.com/2007/03/emacs-client-for-google-services.html>.
  .
- Note: 2017-09-24 Dead project
+ Note: 2017-09-24 Source code is in Github
